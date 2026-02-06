@@ -1,0 +1,119 @@
+COEN 346 – Assignment 1
+Team Plan & Shared Naming Agreement
+
+Team Members:
+- Nirthika → Master Thread
+- Ruhani   → Worker Thread
+
+==================================================
+SECTION 1 — TASK CHECKLIST
+==================================================
+
+NIRTHIKA (MasterThread responsibilities):
+[ ] Create MasterThread.java
+[ ] Read the dataset text file in the constructor
+[ ] Load each log entry into a String array
+[ ] Maintain the variables required by the assignment
+[ ] Control rounds and worker creation
+[ ] Assign ONE log line per worker per round
+[ ] Wait for workers to finish (join)
+[ ] Compute approximate_avg after each round
+[ ] Increase worker_number by +2 when condition is met
+[ ] Add sleep(2000) when worker_number increases
+[ ] Print useful debug output per round
+
+RUHANI (WorkerThread responsibilities):
+[ ] Create WorkerThread.java
+[ ] Receive one log line from MasterThread
+[ ] Slide over the log line using substrings
+[ ] Compare each substring with the vulnerability pattern
+[ ] Use LevenshteinDistance.java
+[ ] Decide if acceptable_change is true
+[ ] Notify MasterThread when a vulnerability is detected
+[ ] Add comments explaining the search process
+
+BOTH (together later):
+[ ] Add Main.java
+[ ] Integrate Master and Worker
+[ ] Test with dataset
+[ ] Write report together
+
+==================================================
+SECTION 2 — VARIABLES REQUIRED BY ASSIGNMENT (PDF)
+==================================================
+
+These names are REQUIRED and come directly from the assignment PDF.
+We must use them exactly as written.
+
+MasterThread variables (PDF-required):
+- VulnerabilityPattern   → String
+- worker_number          → int (initial value = 2)
+- Count                  → int (initial value = 2)
+- Avg                    → double (initial value = 0)
+- approximate_avg        → double
+
+WorkerThread (PDF-required concept):
+- acceptable_change      → Boolean (inside LevenshteinDistance)
+
+==================================================
+SECTION 3 — ADDITIONAL VARIABLES (ADDED BY US)
+==================================================
+
+These variables are NOT specified by the PDF.
+Names are chosen to be human-readable.
+
+MasterThread additional variables:
+- logLines           → String[] (all log entries from file)
+- currentLineIndex   → int (next log line to assign)
+- activeWorkers      → int (workers used in current round)
+- roundNumber        → int (for debugging / prints)
+
+WorkerThread additional variables:
+- logLine            → String (single assigned log line)
+- pattern            → String (vulnerability pattern from Master)
+- master             → MasterThread (reference to Master)
+
+==================================================
+SECTION 4 — FUNCTION / METHOD NAMES
+==================================================
+
+PDF-required behavior (name not enforced by PDF):
+- Worker increments Count in MasterThread when acceptable_change is true
+
+Method names we AGREED on:
+
+MasterThread methods:
+- MasterThread(String filePath)
+  → reads dataset file and initializes logLines
+
+- reportDetection()
+  → synchronized
+  → increments Count by 1
+
+- run()
+  → controls rounds, launches workers, updates averages
+
+WorkerThread methods:
+- WorkerThread(String logLine, String pattern, MasterThread master)
+  → constructor
+
+- run()
+  → searches assigned log line
+  → calls reportDetection() if match found
+
+==================================================
+SECTION 5 — RULES WE AGREED TO FOLLOW
+==================================================
+
+[ ] Assignment-required variable names are NOT renamed
+[ ] New variables use clear, human-friendly names
+[ ] WorkerThread processes exactly ONE log line
+[ ] WorkerThread never creates threads or reads files
+[ ] MasterThread controls all rounds and scaling
+[ ] Count is global and never reset
+[ ] Pattern is passed from Master to Worker (not hardcoded)
+[ ] sleep(2000) is used ONLY when worker_number increases
+
+==================================================
+END OF FILE
+==================================================
