@@ -1,19 +1,17 @@
 /**
  * WorkerThread
- *
- * Each worker receives ONE log line from MasterThread.
- * It scans the line using a sliding window and compares
- * each substring with the vulnerability pattern using
- * LevenshteinDistance.java.
- *
- * If acceptable_change becomes true, it reports one
- * vulnerability to MasterThread.
+ * -Accept One log line, Vulnerability pattern, Reference to MasterThread
+ * -Slide over log lines using substring windows
+ * -Levenshtein functions
+ * -Detect acceptable change
+ * -Notify Master when vulnerability is found
  */
-public class WorkerThread extends Thread {
+public class WorkerThread extends Thread { // Worker = Thread that searches one log line
 
-    private final String logLine;
-    private final String pattern;
-    private final MasterThread master;
+    private final String logLine; // single assigned log line
+    private final String pattern; // vulnerability pattern from master
+    private final MasterThread master; // reference to Master thread
+    // Constructor
 
     public WorkerThread(String logLine, String pattern, MasterThread master) {
         this.logLine = (logLine == null) ? "" : logLine;
@@ -24,31 +22,29 @@ public class WorkerThread extends Thread {
     @Override
     public void run() {
 
-        // Safety checks
+        // error check
         if (pattern == null || pattern.isEmpty())
             return;
 
-        int patLen = pattern.length();
+        int patternLength = pattern.length();
 
-        if (logLine.length() < patLen)
+        if (logLine.length() < patternLength)
             return;
 
-        // IMPORTANT:
-        // Calculate() is NON-STATIC → must create an object
-        LevenshteinDistance ld = new LevenshteinDistance();
+        LevenshteinDistance ld = new LevenshteinDistance(); // each worker has its own object
 
-        // Sliding window search
-        for (int i = 0; i <= logLine.length() - patLen; i++) {
+        // Sliding over log line
+        for (int i = 0; i <= logLine.length() - patternLength; i++) {
 
-            String window = logLine.substring(i, i + patLen);
+            String substring = logLine.substring(i, i + patternLength);
 
-            // Call Calculate() correctly (NOT static)
-            ld.Calculate(pattern, window);
+            // Apply Levenshtein function
+            ld.Calculate(pattern, substring);
 
-            // acceptable_change is set internally in LevenshteinDistance.java
+            // acceptable_change from LevenshteinDistance.java
             if (ld.isAcceptable_change()) {
-                master.reportVulnerability(); // safely increments count
-                return; // report once per line
+                master.reportVulnerability(); // tell master to increment count
+                return;
             }
         }
     }
