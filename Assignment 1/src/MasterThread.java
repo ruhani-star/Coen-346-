@@ -10,7 +10,6 @@ MasterThread's Tasks:
 6) Keep track of the total vulnerability count.
 7) Adjust the number of workers based on the results.
 8) Print the final results after processing all lines.
-
 */
 
 import java.io.BufferedReader;

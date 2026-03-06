@@ -4,6 +4,7 @@
  *
  * @author Serguei A. Mokhov, mokhov@cs.concordia.ca
  */
+import java.util.Scanner;  //import scanner
 public class DiningPhilosophers
 {
 	/*
@@ -46,7 +47,20 @@ public class DiningPhilosophers
 			 * Should be settable from the command line
 			 * or the default if no arguments supplied.
 			 */
-			int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+			//int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+			//Task 3:
+			Scanner scanner =new Scanner(System.in);
+			int iPhilosophers = 0;
+			while(iPhilosophers <3){
+				System.out.println("Enter a philosopher number >=3: ");
+				if (scanner.hasNextInt()){
+					iPhilosophers = scanner.nextInt();
+				}
+				else {
+					String invalidInput =scanner.next();
+					System.out.println(invalidInput + "is not an acceptable number.");
+				}
+			}
 
 			// Make the monitor aware of how many philosophers there are
 			soMonitor = new Monitor(iPhilosophers);

@@ -12,7 +12,7 @@ public class WorkerThread extends Thread { // Worker = Thread that searches one 
     private final String pattern; // vulnerability pattern from master
     private final MasterThread master; // reference to Master thread
     // Constructor
-
+    
     public WorkerThread(String logLine, String pattern, MasterThread master) {
         this.logLine = (logLine == null) ? "" : logLine;
         this.pattern = pattern;
