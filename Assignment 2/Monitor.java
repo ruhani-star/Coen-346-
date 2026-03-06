@@ -233,4 +233,81 @@ public class Monitor {
 	}
 }
 
+/**
+ * Task 4: Dynamic Modification of the Number of Philosophers
+ * 
+ * Dynamic modification is NOT feasible with our current implementation:
+ * 
+ * ----------------------------------------------------------------------
+ * Reason 1: FIXED-SIZE ARRAYS IN MONITOR
+ * ----------------------------------------------------------------------
+ * Our Monitor uses fixed-size arrays (state[], hungerCounter[],
+ * hasPepperShaker[]) that are initialized in the constructor with a
+ * specific size. Java arrays CANNOT be resized after creation. If we
+ * wanted to add a new philosopher mid-execution, we would need a larger
+ * array, but this is impossible without stopping all threads and recreating
+ * new arrays - which would cause data corruption and race conditions.
+ * 
+ * ----------------------------------------------------------------------
+ * Reason 2: CHOPSTICK COUNT IS FIXED
+ * ----------------------------------------------------------------------
+ * In our implementation, the number of chopsticks equals the number of
+ * philosophers, set at startup. Philosopher i uses chopstick i and
+ * chopstick (i+1)%N. If we add a philosopher, we would need a new chopstick,
+ * but our monitor has no mechanism to create new resources dynamically.
+ * If we remove a philosopher, their chopstick becomes orphaned and neighbor
+ * relationships break.
+ * 
+ * ----------------------------------------------------------------------
+ * Reason 3: STATIC NEIGHBOR RELATIONSHIPS
+ * ----------------------------------------------------------------------
+ * Our synchronization logic depends on fixed neighbor calculations:
+ * 
+ * int leftNeighbor = (philosopherId + numPhilosophers - 1) % numPhilosophers;
+ * int rightNeighbor = (philosopherId + 1) % numPhilosophers;
+ * 
+ * This formula assumes consecutive IDs and a complete circle. Adding or
+ * removing philosophers would require recalculating ALL neighbor relationships,
+ * which is impossible while philosophers are actively eating/thinking/talking.
+ * 
+ * ----------------------------------------------------------------------
+ * Reason 4: THREAD LIFECYCLE MANAGEMENT
+ * ----------------------------------------------------------------------
+ * All philosopher threads are created and started at once in main(), and main()
+ * waits for ALL to finish using join(). There is no mechanism to:
+ *
+ * - Create and start new threads mid-execution
+ * - Safely stop and clean up existing threads
+ * - Handle threads that might be holding resources when removed
+ *
+ * ----------------------------------------------------------------------
+ * Reason 5: WAIT()/NOTIFYALL() SYNCHRONIZATION
+ * ----------------------------------------------------------------------
+ * Our monitor uses wait() and notifyAll() for synchronization. This mechanism
+ * assumes a FIXED set of waiting threads. If we add or remove philosophers
+ * dynamically, the wait set becomes unpredictable, and notifyAll() would wake
+ * up an inconsistent number of threads, breaking the synchronization logic.
+ * 
+ * ----------------------------------------------------------------------
+ * Reason 6: STARVATION-FREE MECHANISM BREAKS
+ * ----------------------------------------------------------------------
+ * Our starvation-free solution uses hungerCounter[] where philosophers with
+ * higher counts get priority. If we add a NEW philosopher mid-execution, their
+ * hungerCounter starts at 0 while existing philosophers may have high counts
+ * (5,6,7...). The new philosopher would ALWAYS have the lowest priority =
+ * STARVATION.
+ * If we remove a philosopher, their hunger data is lost and fairness
+ * comparisons
+ * become inconsistent.
+ * 
+ * ----------------------------------------------------------------------
+ * Reason 7: TALKING MUTUAL EXCLUSION
+ * ----------------------------------------------------------------------
+ * Our talk synchronization uses a boolean flag (isTalking) and wait() for
+ * mutual exclusion. If we try to remove a philosopher who is currently talking,
+ * or add a new philosopher while someone is talking, the waiting queue becomes
+ * unpredictable and the mutual exclusion guarantee breaks.
+ *
+ */
+
 // EOF
