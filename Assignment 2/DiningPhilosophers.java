@@ -51,14 +51,18 @@ public class DiningPhilosophers
 			//Task 3:
 			Scanner scanner =new Scanner(System.in);
 			int iPhilosophers = 0;
-			while(iPhilosophers <3){
+			while(iPhilosophers <3){  // keep prompting the user until valid philosopher number is added
 				System.out.println("Enter a philosopher number >=3: ");
 				if (scanner.hasNextInt()){
 					iPhilosophers = scanner.nextInt();
+
+					if(iPhilosophers < 0){   //If negative number is entered
+						System.out.println(iPhilosophers + " is not an acceptable number. Please enter a positive number >=3: ");
+					}
 				}
-				else {
+				else {  // if a not valid input is entered
 					String invalidInput =scanner.next();
-					System.out.println(invalidInput + "is not an acceptable number.");
+					System.out.println(invalidInput + " is not an acceptable number. Enter a number >=3. ");
 				}
 			}
 
