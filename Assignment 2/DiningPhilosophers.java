@@ -4,7 +4,7 @@
  *
  * @author Serguei A. Mokhov, mokhov@cs.concordia.ca
  */
-import java.util.Scanner;  //import scanner
+import java.util.Scanner;       //import scanner
 public class DiningPhilosophers
 {
 	/*
@@ -12,44 +12,28 @@ public class DiningPhilosophers
 	 * Data members
 	 * ------------
 	 */
-
-	/**
-	 * This default may be overridden from the command line
-	 */
+	
+	// This default may be overridden from the command line
 	public static final int DEFAULT_NUMBER_OF_PHILOSOPHERS = 5;
 
-	/**
-	 * Dining "iterations" per philosopher thread
-	 * while they are socializing there
-	 */
+	 // Dining "iterations" per philosopher thread while they are socializing there
 	public static final int DINING_STEPS = 10;
-
-	/**
-	 * Our shared monitor for the philosphers to consult
-	 */
+	
+	// Our shared monitor for the philosphers to consult 
 	public static Monitor soMonitor = null;
-
 	/*
 	 * -------
-	 * Methods
+	 *Methods
 	 * -------
 	 */
-
-	/**
-	 * Main system starts up right here
-	 */
+	
+	 // Main system starts up right here 
 	public static void main(String[] argv)
 	{
 		try
-		{
-			/*
-			 * TODO:
-			 * Should be settable from the command line
-			 * or the default if no arguments supplied.
-			 */
-			//int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
-			//Task 3:
-			Scanner scanner =new Scanner(System.in);
+		{		 
+			//TASK 3:
+			Scanner scanner = new Scanner(System.in);
 			int iPhilosophers = 0;
 			while(iPhilosophers <3){  // keep prompting the user until valid philosopher number is added
 				System.out.println("Enter a philosopher number >=3: ");
@@ -85,8 +69,7 @@ public class DiningPhilosophers
 				" philosopher(s) came in for a dinner."
 			);
 
-			// Main waits for all its children to die...
-			// I mean, philosophers to finish their dinner.
+			// Main waits for all philosophers to finish their dinner.
 			for(int j = 0; j < iPhilosophers; j++)
 				aoPhilosophers[j].join();
 
