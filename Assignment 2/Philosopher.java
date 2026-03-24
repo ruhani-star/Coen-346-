@@ -74,7 +74,7 @@ public class Philosopher extends BaseThread {
 
 
 			// decision is made at random whether this particular philosopher is about to talk
-			if (Math.random() < 0.5); // 50% chance philosopher will talk
+			if (Math.random() < 0.5) // 50% chance philosopher will talk
 			{
 				// Some monitor ops down here...
 				DiningPhilosophers.soMonitor.requestTalk();
