@@ -1,15 +1,28 @@
 /**
- * Class Monitor
- * To synchronize dining philosophers.
+ * Monitor.java
  *
- * @author Serguei A. Mokhov, mokhov@cs.concordia.ca
+ * Controls synchronization between philosophers.
+ * Ensures safe access to shared resources (chopsticks, talking, pepper
+ * shakers).
+ *
+ * How it works:
+ * - pickUp(): philosopher becomes HUNGRY and waits until allowed to eat
+ * - test(): checks if a philosopher can eat (neighbors not eating + fairness
+ * using hungerCounter)
+ * - putDown(): philosopher finishes eating, becomes THINKING, and allows
+ * neighbors to try eating
+ * - requestTalk()/endTalk(): ensures only one philosopher talks at a time
+ * - requestPepperShakers()/releasePepperShakers(): ensures only 2 pepper
+ * shakers are used safely
+ *
+ * Key ideas:
+ * - Deadlock prevention: implemented in test() by allowing eating only if
+ * neighbors are not eating
+ * - Starvation prevention: implemented in test() using hungerCounter to
+ * prioritize waiting philosophers
+ * - Uses synchronized, wait(), and notifyAll() for thread coordination
  */
 public class Monitor {
-	/*
-	 * ------------
-	 * Data members
-	 * ------------
-	 */
 
 	// Constants for philosophers' states
 	private static final int THINKING = 0;
@@ -47,18 +60,6 @@ public class Monitor {
 	}
 
 	/*
-	 * -------------------------------
-	 * User-defined monitor procedures
-	 * You may need to add more procedures for task 5
-	 * -------------------------------
-	 */
-
-	/**
-	 * Grants request (returns) to eat when both chopsticks/forks are available.
-	 * Else forces the philosopher to wait()
-	 */
-
-	/*
 	 * pickUp() steps:
 	 * 1. convert Thread ID. to correct array position
 	 * 2. mark it as hungry
@@ -79,7 +80,7 @@ public class Monitor {
 		// Try to let this philosopher eat
 		test(philosopherId);
 
-		// If test didn't change stae to EATING, wait
+		// If test didn't change state to EATING, wait
 		if (state[philosopherId] != EATING) {
 			try {
 				wait();
@@ -132,7 +133,7 @@ public class Monitor {
 	}
 
 	/**
-	 * When a given philosopher's done eating, they put the chopstiks/forks down
+	 * When a given philosopher's done eating, they put the chopstiks down
 	 * and let others know they are available.
 	 */
 	public synchronized void putDown(final int piTID) {
@@ -148,10 +149,11 @@ public class Monitor {
 		state[philosopherId] = THINKING;
 		System.out.println("Philosopher " + piTID + " finished eating, is now thinking.");
 
-		// Check if neighbors can now eat
+		// Check who are my neighbors
 		int leftNeighbor = (philosopherId + numPhilosophers - 1) % numPhilosophers;
 		int rightNeighbor = (philosopherId + 1) % numPhilosophers;
 
+		// Check if my neighbors can eat now that I'm done
 		test(leftNeighbor);
 		test(rightNeighbor);
 
@@ -235,8 +237,22 @@ public class Monitor {
 
 /**
  * Task 4: Dynamic Modification of the Number of Philosophers
- * 
- * Dynamic modification is NOT feasible with our current implementation:
+ *
+ * SUMMARY: Dynamic modification is NOT feasible in this implementation.
+ *
+ * WHY NOT?:
+ * - The monitor uses fixed-size arrays (state[], hungerCounter[]) that
+ * cannot be resized at runtime
+ * - Neighbor relationships are fixed using circular indexing and cannot be
+ * updated safely during execution
+ * - All threads are created once in main(), with no mechanism to add or remove
+ * threads dynamically
+ * - Synchronization using wait()/notifyAll() assumes a fixed set of threads
+ * - The starvation prevention (hungerCounter) would become unfair if new
+ * philosophers are added
+ *
+ * Therefore, supporting philosophers joining or leaving during execution would
+ * require a complete redesign.
  * 
  * ----------------------------------------------------------------------
  * Reason 1: FIXED-SIZE ARRAYS IN MONITOR
@@ -296,6 +312,7 @@ public class Monitor {
  * hungerCounter starts at 0 while existing philosophers may have high counts
  * (5,6,7...). The new philosopher would ALWAYS have the lowest priority =
  * STARVATION.
+ * 
  * If we remove a philosopher, their hunger data is lost and fairness
  * comparisons
  * become inconsistent.

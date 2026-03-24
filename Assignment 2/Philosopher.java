@@ -12,7 +12,6 @@ public class Philosopher extends BaseThread {
 	 */
 	public static final long TIME_TO_WASTE = 1000;
 
-	
 	// The act of eating.
 	public void eat() {
 		try {
@@ -32,14 +31,14 @@ public class Philosopher extends BaseThread {
 		}
 	}
 
-	
-	// The act of thinking 
+	// The act of thinking
 	public void think() {
 		try {
 			System.out.println("Philospher " + getTID() + " has started thinking."); // Print the fact that a given phil
-																					// (their TID) has started thinking
+																						// (their TID) has started
+																						// thinking
 			Thread.yield(); // yield
-			sleep((long) (Math.random() * TIME_TO_WASTE));  // sleep() for a random interval.
+			sleep((long) (Math.random() * TIME_TO_WASTE)); // sleep() for a random interval.
 			Thread.yield(); // yield
 			System.out.println("Philospher " + getTID() + " is done thinking."); // print that they are done thinking.
 
@@ -53,15 +52,14 @@ public class Philosopher extends BaseThread {
 
 	// The act of talking
 	public void talk() {
-		System.out.println("Philosopher " + getTID() + " has started talking."); //Print # phil started talking
-		Thread.yield(); //yield
-		saySomething(); //say something at random
-		Thread.yield(); //yield
-		System.out.println("Philosopher " + getTID() + " is done talking."); //print done talking
+		System.out.println("Philosopher " + getTID() + " has started talking."); // Print # phil started talking
+		Thread.yield(); // yield
+		saySomething(); // say something at random
+		Thread.yield(); // yield
+		System.out.println("Philosopher " + getTID() + " is done talking."); // print done talking
 	}
 
-	
-	 //No, this is not the act of running, just the overridden Thread.run()
+	// Overridden Thread.run()
 	public void run() {
 		for (int i = 0; i < DiningPhilosophers.DINING_STEPS; i++) {
 			DiningPhilosophers.soMonitor.pickUp(getTID());
@@ -74,7 +72,7 @@ public class Philosopher extends BaseThread {
 
 
 			// decision is made at random whether this particular philosopher is about to talk
-			if (Math.random() < 0.5) // 50% chance philosopher will talk
+			if (Math.random() < 0.5); // 50% chance philosopher will talk
 			{
 				// Some monitor ops down here...
 				DiningPhilosophers.soMonitor.requestTalk();
@@ -84,10 +82,9 @@ public class Philosopher extends BaseThread {
 
 			Thread.yield();
 		}
-	} // run()
+	}
 
-	
-	 //Prints out a phrase from the array of phrases at random.
+	// Prints out a phrase from the array of phrases at random.
 	public void saySomething() {
 		String[] astrPhrases = {
 				"Eh, it's not easy to be a philosopher: eat, think, talk, eat...",
