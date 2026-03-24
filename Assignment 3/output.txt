@@ -1,0 +1,69 @@
+Time 1, Process 1, Started
+Time 2, Process 1, Paused
+Time 2, Process 2, Started
+Time 3, Process 2, Paused
+Time 3, Process 3, Started
+Time 4, Process 3, Paused
+Time 4, Process 4, Started
+Time 5, Process 4, Paused
+Time 5, Process 2, Resumed
+Time 6, Process 2, Paused
+Time 6, Process 4, Resumed
+Time 7, Process 4, Finished
+Time 7, Process 2, Resumed
+Time 8, Process 2, Paused
+Time 8, Process 5, Started
+Time 9, Process 5, Paused
+Time 9, Process 2, Resumed
+Time 10, Process 2, Paused
+Time 10, Process 5, Resumed
+Time 11, Process 5, Paused
+Time 11, Process 2, Resumed
+Time 12, Process 2, Finished
+Time 12, Process 5, Resumed
+Time 13, Process 5, Paused
+Time 13, Process 3, Resumed
+Time 14, Process 3, Paused
+Time 14, Process 5, Resumed
+Time 15, Process 5, Paused
+Time 15, Process 3, Resumed
+Time 16, Process 3, Paused
+Time 16, Process 5, Resumed
+Time 17, Process 5, Paused
+Time 17, Process 3, Resumed
+Time 18, Process 3, Paused
+Time 18, Process 5, Resumed
+Time 19, Process 5, Finished
+Time 19, Process 3, Resumed
+Time 20, Process 3, Paused
+Time 20, Process 1, Resumed
+Time 21, Process 1, Paused
+Time 21, Process 3, Resumed
+Time 22, Process 3, Paused
+Time 22, Process 1, Resumed
+Time 23, Process 1, Paused
+Time 23, Process 3, Resumed
+Time 24, Process 3, Paused
+Time 24, Process 1, Resumed
+Time 25, Process 1, Paused
+Time 25, Process 3, Resumed
+Time 26, Process 3, Finished
+Time 26, Process 1, Resumed
+Time 27, Process 1, Paused
+Time 27, Process 1, Resumed
+Time 28, Process 1, Paused
+Time 28, Process 1, Resumed
+Time 29, Process 1, Paused
+Time 29, Process 1, Resumed
+Time 30, Process 1, Paused
+Time 30, Process 1, Resumed
+Time 31, Process 1, Paused
+Time 31, Process 1, Resumed
+Time 32, Process 1, Finished
+--------------------------------------------------
+Waiting Times:
+Process 1: 21
+Process 2: 5
+Process 3: 15
+Process 4: 1
+Process 5: 8

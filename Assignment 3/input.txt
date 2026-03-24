@@ -1,7 +1,5 @@
-/* Input: Each line of the input file contains information related to one process. The first column
-is the arrival time (ready time) of the process and the second column shows the required
-execution time for the process. */ (Remove instruction part when running code)
-
-1 5
-2 3
-3 1
+1 10
+2 5
+3 8
+4 2
+5 6
