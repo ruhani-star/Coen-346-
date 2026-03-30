@@ -74,8 +74,11 @@ public class Main {
 
         // create and start a thread for each process
         // each one immediately blocks on runSignal waiting for the scheduler
+        List<Thread> processThreads = new ArrayList<>();
+
         for (Process p : processes) {
             Thread t = new Thread(p);
+            processThreads.add(t);
             t.start();
         }
 
@@ -84,7 +87,9 @@ public class Main {
 
         // wait for scheduler to fully finish before writing output
         schedulerThread.join();
-
+        for (Thread t : processThreads) {
+            t.join();
+        }
         // write results to output.txt
         writeOutput(scheduler.getEventLog(), processes);
     }

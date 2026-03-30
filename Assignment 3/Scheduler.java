@@ -101,6 +101,7 @@ public class Scheduler implements Runnable {
             // pick next process and compute its quantum
             Process next = pickNext(ready);
             int quantum = computeQuantum(next);
+            int actualRun = Math.min(quantum, next.getRemainingTime());
 
             // log Started on first access, Resumed on all subsequent ones
             if (!next.hasStarted()) {
@@ -111,10 +112,10 @@ public class Scheduler implements Runnable {
             }
 
             // hand CPU to process — blocks here until process finishes quantum
-            next.runQuantum(quantum);
+            next.runQuantum(actualRun);
 
             // advance clock and record finish time
-            currentTime += quantum;
+            currentTime += actualRun;
             next.setFinishTime(currentTime);
             lastRan = next;
 

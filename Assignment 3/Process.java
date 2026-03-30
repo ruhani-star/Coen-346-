@@ -53,7 +53,7 @@ public class Process implements Runnable {
             }
 
             // subtract the quantum the scheduler assigned
-            remainingTime -= quantumToRun;
+            remainingTime -= Math.min(remainingTime, quantumToRun);
 
             // mark done if no time left
             if (remainingTime <= 0)
